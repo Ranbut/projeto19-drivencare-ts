@@ -4,6 +4,7 @@ import "dotenv/config";
 import errors from "../errors/index.ts";
 import patientsRepositories from "../repositories/patientRepositories.ts";
 import { Patient } from "../protocols.ts";
+import medicRepositories from "../repositories/medicRepositories.ts";
 
 async function signUp({ name, cpf, email, password } : Patient) {
 
@@ -32,7 +33,18 @@ async function login({ email, password } : Patient) {
   return token;
 }
 
+async function checkAvaliableTime(medicId: number) {
+
+  const { rowCount } = await medicRepositories.findById(medicId);
+  if (!rowCount) throw errors.medicNotFound();
+
+  const result = patientsRepositories.checkAvaliableTime(medicId);
+
+  return result;
+}
+
 export default {
   signUp,
   login,
+  checkAvaliableTime
 };

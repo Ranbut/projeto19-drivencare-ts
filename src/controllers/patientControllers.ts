@@ -24,7 +24,20 @@ async function login(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function checkAvaliableTime(req: Request, res: Response, next: NextFunction) {
+  const medicId = req.params.id as unknown as number;
+
+  try {
+    const { rows: list } = await patientServices.checkAvaliableTime(medicId);
+    
+    return res.send(list);
+  } catch (err) {
+    next(err);
+  }
+}
+
 export default {
   signUp,
   login,
+  checkAvaliableTime
 };

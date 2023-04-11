@@ -39,9 +39,23 @@ async function newPatient({ name, cpf, email, password } : Patient) {
   );
 }
 
+async function checkAvaliableTime(medicId: number) {
+  return await db.query(
+    `
+    SELECT m.name as medic, date, time
+    FROM "availableDatesTimes" a
+    LEFT JOIN "medics" m
+    ON a."medicId" = m.id
+    WHERE a."medicId"=$1
+    `,
+    [medicId]
+  );
+}
+
 export default {
   findByEmail,
   findByCpf,
   findById,
   newPatient,
+  checkAvaliableTime
 };
