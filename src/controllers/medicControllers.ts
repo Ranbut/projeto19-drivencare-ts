@@ -24,6 +24,18 @@ async function login(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function addAvaliableDate(req: Request, res: Response, next: NextFunction) {
+  const { date, time } = req.body;
+  const { id : userId } = res.locals.user;
+  try {
+    await medicServices.addAvaliableDate(userId, date, time);
+
+    return res.sendStatus(201);
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function medicsByName(req: Request, res: Response, next: NextFunction) {
   const { name } = req.params;
   try {
@@ -61,6 +73,7 @@ async function medicsByAddress(req: Request, res: Response, next: NextFunction) 
 export default {
   signUp,
   login,
+  addAvaliableDate,
   medicsByName,
   medicsBySpecialty,
   medicsByAddress

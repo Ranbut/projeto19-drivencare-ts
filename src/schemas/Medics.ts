@@ -16,7 +16,13 @@ const login = joi.object({
     password: joi.string().required()
 });
 
+const createAvaliable = joi.object({
+  date: joi.string().required(),
+  time: joi.string().required()
+});
+
 export default {
     signUp,
     login,
+    createAvaliable
   };

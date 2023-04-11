@@ -12,6 +12,26 @@ async function newMedic({ name, cpf, address, email, password, specialization }:
   );
 }
 
+async function addAvaliableDate(userId: number, date: string, time: string) {
+  return await db.query(
+    `
+    INSERT INTO "availableDatesTimes"
+        ("medicId", date, time)
+    VALUES ($1, $2, $3)
+    `,
+    [userId, date, time]
+  );
+}
+
+async function findDateTime(date: string, time: string) {
+  return await db.query(
+    `
+    SELECT * FROM "availableDatesTimes" WHERE date=$1 AND time=$2
+    `,
+    [date, time]
+  );
+}
+
 async function findByEmail(email: string) {
   return await db.query(
     `
@@ -79,6 +99,8 @@ async function findByAddress(address: string) {
 
 export default {
   newMedic,
+  addAvaliableDate,
+  findDateTime,
   findByEmail,
   findById,
   findByCpf,
